@@ -1,0 +1,85 @@
+wandb:
+  log: true
+  entity: diffusion_cornell
+  project: prompt_image_alignment
+  name: pia_rlcm_32max_8min_count_${now:%Y-%m-%d_%H-%M-%S}
+task: prompt_image_alignment
+alg: ppo
+training:
+  use_lora: true
+  seed: 1
+  lcm_origin_steps: 50
+  guidance_scale: 8.0
+  save_interval: 5
+  max_prompt_length: 50
+  logdir: "logs"
+compression:
+  model: SimianLuo/LCM_Dreamshaper_v7
+  lr: 1e-4
+  sample_batch_size_per_gpu: 8
+  train_batch_size_per_gpu: 2
+  num_inner_epochs: 1
+  clip_range: 0.0001
+  max_grad_norm: 5
+  adv_clip_max: 10
+  gradient_accumulation_steps: 4
+  num_epochs: 100
+  num_inference_steps: 8
+  batches_per_epoch: 10
+  stat_buffer_size: 16
+  stat_min_count: 16
+  dataset: ComplexAnimals
+  reward_fn: compressibility
+incompression:
+  model: SimianLuo/LCM_Dreamshaper_v7
+  lr: 1e-4
+  sample_batch_size_per_gpu: 8
+  train_batch_size_per_gpu: 2
+  num_inner_epochs: 1
+  clip_range: 0.0001
+  max_grad_norm: 5
+  adv_clip_max: 10
+  gradient_accumulation_steps: 4
+  num_epochs: 100
+  num_inference_steps: 8
+  batches_per_epoch: 10
+  stat_buffer_size: 16
+  stat_min_count: 16
+  dataset: ComplexAnimals
+  reward_fn: incompressibility
+aesthetic:
+  model: SimianLuo/LCM_Dreamshaper_v7
+  lr: 1e-4
+  sample_batch_size_per_gpu: 8
+  train_batch_size_per_gpu: 2
+  num_inner_epochs: 1
+  clip_range: 0.0001
+  max_grad_norm: 5
+  adv_clip_max: 10
+  gradient_accumulation_steps: 4
+  num_epochs: 100
+  num_inference_steps: 8
+  batches_per_epoch: 10
+  stat_buffer_size: 32
+  stat_min_count: 16
+  dataset: SimpleAnimals
+  reward_fn: aesthetic
+prompt_image_alignment:
+  model: SimianLuo/LCM_Dreamshaper_v7
+  lr: 4e-4
+  sample_batch_size_per_gpu: 8
+  train_batch_size_per_gpu: 2
+  num_inner_epochs: 12
+  clip_range: 0.0001
+  max_grad_norm: 5
+  adv_clip_max: 10
+  gradient_accumulation_steps: 48
+  num_epochs: 100
+  num_inference_steps: 8
+  batches_per_epoch: 1
+  stat_buffer_size: 32
+  stat_min_count: 10
+  train_num_inner_epochs: 1
+  dataset: AnimalsWithActions
+  reward_fn: prompt_image_alignment
+  port: 8060
