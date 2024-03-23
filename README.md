@@ -14,14 +14,14 @@ pip install -e .
 ```
 you must have python `>=3.10` installed.
 
-## Training RLCM
+## RLCM Training
 RLCM is run by navigating into the `scripts` folder and then running the `main.py` file using accelerate. By default, we using the `compression` task but other tasks can be used.
 
 ```bash
 accelerate launch main.py
 ```
 
-## Inference RLCM
+## RLCM Inference
 We also provide a sample inference script once you have saved your models to disk. This script is located in the `scripts` folder and is called `inference.py`. You can run this script by running the following command (after editing it to point to your saved model):
 
 ```bash
