@@ -7,16 +7,16 @@ prompt_image_alignment:
   lr: 4e-4
   sample_batch_size_per_gpu: 8
   train_batch_size_per_gpu: 2
-  num_sample_iters: 12
+  num_sample_iters: 5
   clip_range: 0.0001
   max_grad_norm: 5
   adv_clip_max: 10
-  gradient_accumulation_steps: 48
-  num_epochs: 100
-  num_inference_steps: 8
-  batches_per_epoch: 1
+  gradient_accumulation_steps: 20
+  num_epochs: 118
+  num_inference_steps: 16
+  batches_per_epoch: 6
   stat_buffer_size: 32
-  stat_min_count: 10
+  stat_min_count: 16
   num_inner_epochs: 1
   lora_alpha: 32
   lora_r: 16
