@@ -1,8 +1,8 @@
 wandb:
   log: true
-  entity: diffusion_cornell
-  project: prompt_image_alignment
-  name: pia_rlcm_32max_8min_count_${now:%Y-%m-%d_%H-%M-%S}
+  entity: ENTITY
+  project: PROJECT
+  name: NAME_${now:%Y-%m-%d_%H-%M-%S}
 
 hydra:
   run:
