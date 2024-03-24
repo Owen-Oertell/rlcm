@@ -32,7 +32,7 @@ python inference.py
 ```
 
 ## Summary of Hyperparameters
-Below is a summary of the hyperparameters that can be used to train. Each task has its on hyperparameters. The default ones are given in `lcm_rl_pytorch/configs` and can be overwritten by passing them as arguments to the `main.py` script.
+Below is a summary of the hyperparameters that can be used to train. Each task has its own hyperparameters. The default ones are given in `lcm_rl_pytorch/configs` and can be overwritten by passing them as arguments to the `main.py` script.
 - `model`. The model that we are using to train. To use without modification it must use the LCM pipeline. This code uses `SimianLuo/LCM_Dreamshaper_v7`.
 - `lr`. The learning rate for the policy gradient updates.
 - `sample_batch_size_per_gpu`. The number of samples that are being collected per forward pass of the model.
@@ -55,7 +55,7 @@ Below is a summary of the hyperparameters that can be used to train. Each task h
 - `port`. For prompt image alignment task, we also have a port parameter to match the server port.
 
 ## Reproducing Results
-We reproduce our results from the paper below. Please see the appendix for full information on hyperparameters and number of gpus used. At a high level however, we used 4 RTX a6000 gpus for each of the tasks where the `prompt image alignment` task was run with 3 gpus and 1 gpus for the server (from [kevin's repo](https://github.com/kvablack/LLaVA-server/). Make sure to use to 13b parameter version of LLaVA otherwise we've experienced empty outputs).
+We reproduce our results from the paper below. Please see the appendix for full information of hyperparameters and number of gpus used. At a high level however, we used 4 RTX a6000 gpus for each of the tasks where the `prompt image alignment` task was run with 3 gpus and 1 gpus for the server (from [kevin's repo](https://github.com/kvablack/LLaVA-server/). Make sure to use to 13b parameter version of LLaVA otherwise we've experienced empty outputs).
 
 ![image](figures/main_plot_time.png)
 
