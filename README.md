@@ -25,11 +25,12 @@ accelerate launch main.py task=aesthetic
 There are four tasks available: `prompt_image_alignment`, `aesthetic`, `compression`, and `incompression`. For more discussion about the tasks, please see the paper.
 
 ## RLCM Inference
-We also provide a sample inference script once you have saved your models to disk. This script is located in the `scripts` folder and is called `inference.py`. You can run this script by running the following command (after editing it to point to your saved model):
+We also provide a sample inference script once you have saved your models to disk. This script is located in the `scripts` folder and is called `inference.py`. You can run this script by running the following command (after editing it to point to your saved model and update if you changed the config):
 
 ```bash
 python inference.py
 ```
+
 
 ## Summary of Hyperparameters
 Below is a summary of the hyperparameters that can be used to train. Each task has its own hyperparameters. The default ones are given in `lcm_rl_pytorch/configs` and can be overwritten by passing them as arguments to the `main.py` script.
