@@ -1,6 +1,6 @@
 # Reinforcement Learning for Consistency Models (RLCM)
 
-This is the official implementation of the paper [RL for Consistency Models: Reward Guided Text-to-Image Generation with Fast Inference](https://rlcm.owenoertell.com). We support [low rank adaptation (LoRA)](https://arxiv.org/pdf/2106.09685.pdf) for finetuning a [latent consistency model (LCM)](https://arxiv.org/pdf/2310.04378.pdf). Much of this code was inspired by the repository for [Denoising Diffusion Policy Optimization (DDPO)](https://arxiv.org/pdf/2305.13301.pdf).
+This is the official implementation of the paper [RL for Consistency Models: Faster Reward Guided Text-to-Image Generation](https://rlcm.owenoertell.com). We support [low rank adaptation (LoRA)](https://arxiv.org/pdf/2106.09685.pdf) for finetuning a [latent consistency model (LCM)](https://arxiv.org/pdf/2310.04378.pdf). Much of this code was inspired by the repository for [Denoising Diffusion Policy Optimization (DDPO)](https://arxiv.org/pdf/2305.13301.pdf).
 
 ![image](figures/front_page.png)
 
