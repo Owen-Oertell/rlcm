@@ -2,14 +2,17 @@ import torch
 from torch.utils.data import Dataset
 from random import choices
 import inflect
+from importlib import resources
 
 IE = inflect.engine()
+datasets = resources.files("lcm_rl_pytorch.datasets")
+
 
 class SimpleAnimals:
     def __init__(self, batch_size):
         self.data = []
         self.batch_size = batch_size
-        with open("/share/cuvl/ojo2/cm/lcm_rl_pytorch/datasets/simple_animals.txt", "r") as f:
+        with open(datasets.joinpath("simple_animals.txt"), "r") as f:
             for line in f:
                 self.data.append(line.strip())
 
@@ -23,7 +26,7 @@ class ComplexAnimals:
     def __init__(self, batch_size):
         self.data = []
         self.batch_size = batch_size
-        with open("/share/cuvl/ojo2/cm/lcm_rl_pytorch/datasets/complex_animals.txt", "r") as f:
+        with open(datasets.joinpath("complex_animals.txt"), "r") as f:
             for line in f:
                 self.data.append(line.strip())
 
@@ -38,10 +41,10 @@ class AnimalsWithActions:
         self.animals = []
         self.actions = []
 
-        with open("/share/cuvl/ojo2/cm/lcm_rl_pytorch/datasets/simple_animals.txt", "r") as f:
+        with open(datasets.join_path("simple_animals.txt"), "r") as f:
             for line in f:
                 self.animals.append(line.strip())
-        with open("/share/cuvl/ojo2/cm/lcm_rl_pytorch/datasets/actions.txt", "r") as f:
+        with open(datasets.join_path("actions.txt"), "r") as f:
             for line in f:
                 self.actions.append(line.strip())
 

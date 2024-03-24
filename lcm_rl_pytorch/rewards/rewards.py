@@ -6,7 +6,7 @@ import torch
 from .aesthetic import AestheticScorer
 
 
-def incompressibility():
+def incompressibility(cfg):
     def _fn(images, prompts):
         if isinstance(images, torch.Tensor):
             images = (images * 255).round().clamp(0, 255).to(torch.uint8).cpu().numpy()
@@ -21,8 +21,8 @@ def incompressibility():
     return _fn
 
 
-def compressibility():
-    jpeg_fn = incompressibility()
+def compressibility(cfg):
+    jpeg_fn = incompressibility(cfg)
 
     def _fn(images, prompts):
         rew = jpeg_fn(images, prompts)
@@ -31,7 +31,7 @@ def compressibility():
     return _fn
 
 
-def aesthetic():
+def aesthetic(cfg):
     model = AestheticScorer(torch.float32)
     model = model.to("cuda")
     def _fn(images, prompts):
@@ -39,7 +39,7 @@ def aesthetic():
 
     return _fn
 
-def prompt_image_alignment():
+def prompt_image_alignment(cfg):
     """Submits images to LLaVA and computes a reward by comparing the responses to the prompts using BERTScore. See
     https://github.com/kvablack/LLaVA-server for server-side code.
     """
@@ -49,7 +49,7 @@ def prompt_image_alignment():
     import pickle
 
     batch_size = 16
-    url = "http://127.0.0.1:8060"
+    url = "http://127.0.0.1:" + str(cfg.port) 
     print("using url..." + url)
     sess = requests.Session()
     retries = Retry(

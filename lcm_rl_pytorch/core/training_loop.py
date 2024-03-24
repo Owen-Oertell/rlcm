@@ -44,7 +44,7 @@ def training_loop(accelerator, cfg, training_config, pipeline, reward_fn, datase
             samples = []
             last_images = None
             # =================== SAMPLING ===================
-            for _ in range(training_config.num_inner_epochs):
+            for _ in range(training_config.num_sample_iters):
                 # sample from dataset
                 prompts = dataset.sample()
 
@@ -58,8 +58,6 @@ def training_loop(accelerator, cfg, training_config, pipeline, reward_fn, datase
                 )
 
                 # obtain reward
-                print("prompts: ", prompts)
-                print("submitting reward function")
                 rewards = executor.submit(reward_fn, sample_dict["images"], prompts)
 
                 # add rewards to sample dict
@@ -178,7 +176,7 @@ def training_loop(accelerator, cfg, training_config, pipeline, reward_fn, datase
                 accelerator.device
             )
 
-            for k in range(training_config.train_num_inner_epochs):
+            for k in range(training_config.num_inner_epochs):
                 # shuffle samples_batched
                 shuffle(samples_batched)
 

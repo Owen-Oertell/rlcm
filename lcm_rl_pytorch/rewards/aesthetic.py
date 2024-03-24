@@ -6,7 +6,9 @@ import torch.nn as nn
 import numpy as np
 from transformers import CLIPModel, CLIPProcessor
 from PIL import Image
+from importlib import resources
 
+pretrained_models = resources.files("lcm_rl_pytorch.pretrained_models")
 
 class MLP(nn.Module):
     def __init__(self):
@@ -34,7 +36,7 @@ class AestheticScorer(torch.nn.Module):
         self.processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
         self.mlp = MLP()
         state_dict = torch.load(
-            "/share/cuvl/ojo2/cm/lcm_rl_pytorch/pretrained_models/sac+logos+ava1-l14-linearMSE.pth"
+            pretrained_models.joinpath("sac+logos+ava1-l14-linearMSE.pth")
         )
         self.mlp.load_state_dict(state_dict)
         self.dtype = dtype

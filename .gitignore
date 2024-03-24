@@ -1,0 +1,3 @@
+scripts/outputs
+scripts/wandb
+__pycache__/

@@ -37,7 +37,6 @@ from diffusers.utils import (
 from diffusers.utils.torch_utils import randn_tensor
 from diffusers import DiffusionPipeline
 from diffusers.pipelines.stable_diffusion import StableDiffusionPipelineOutput, StableDiffusionSafetyChecker
-import time
 
 logger = logging.get_logger(__name__)  # pylint: disable=invalid-name
 
@@ -540,7 +539,6 @@ class LatentConsistencyModelPipeline(
         clip_skip: Optional[int] = None,
         callback_on_step_end: Optional[Callable[[int, int, Dict], None]] = None,
         callback_on_step_end_tensor_inputs: List[str] = ["latents"],
-        inference_time = None,
         **kwargs,
     ):
         r"""
@@ -707,13 +705,8 @@ class LatentConsistencyModelPipeline(
         self._num_timesteps = len(timesteps)
         times = []
         denoised_images = []
-        current_time = time.perf_counter_ns()
         with self.progress_bar(total=num_inference_steps) as progress_bar:
             for i, t in enumerate(timesteps):
-                # curr_time = time.perf_counter_ns() 
-                # if time.time()-curr_time > inference_time:
-                #     print("breaking")
-                #     break 
                 latents = latents.to(prompt_embeds.dtype)
                 
                 # model prediction (v-prediction, eps, x)
@@ -750,7 +743,6 @@ class LatentConsistencyModelPipeline(
                     if callback is not None and i % callback_steps == 0:
                         step_idx = i // getattr(self.scheduler, "order", 1)
                         callback(step_idx, t, latents)
-                times.append(time.perf_counter_ns() - current_time)
         denoised = denoised.to(prompt_embeds.dtype)
         if not output_type == "latent":
             image = self.vae.decode(denoised / self.vae.config.scaling_factor, return_dict=False)[0]
@@ -781,7 +773,7 @@ class LatentConsistencyModelPipeline(
 
         return {
             "images": image,
-            "times" : times,
+            # "times" : times,
             # "denoised_images": processed_images,
             # "processed_images": processed_images,
             # "denoised_states": denoised_states,

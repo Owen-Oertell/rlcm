@@ -18,8 +18,7 @@ from lcm_rl_pytorch.core import dataloader
 logger = get_logger(__name__)
 
 import os
-from accelerate.utils import set_seed, ProjectConfiguration
-
+from accelerate.utils import ProjectConfiguration
 
 @hydra.main(
     version_base=None, config_path="../lcm_rl_pytorch/conf", config_name="config"
@@ -36,7 +35,6 @@ def main(cfg: DictConfig) -> None:
         total_limit=99999,
     )
 
-
     # load accelerator
     accelerator = Accelerator(
         log_with="wandb",
@@ -45,8 +43,6 @@ def main(cfg: DictConfig) -> None:
         * training_config.num_inference_steps,
         mixed_precision="fp16",
     )
-
-    # set_seed(cfg.training.seed, device_specific=True)
 
     # init wandb
     if cfg.wandb.log and accelerator.is_main_process:
@@ -66,22 +62,20 @@ def main(cfg: DictConfig) -> None:
     pipeline.vae.requires_grad_(False)
     pipeline.text_encoder.requires_grad_(False)
     pipeline.to(torch_device=accelerator.device, torch_dtype=torch.float16)
-    if cfg.training.use_lora:
-        # for all tasks but aesthetic, we use r=16, alpha =32. For aesthetic, we use r=8, alpha=8
-        unet_lora_config = LoraConfig(
-            r=16,
-            lora_alpha=32,
-            init_lora_weights="gaussian",
-            target_modules=["to_k", "to_q", "to_v", "to_out.0"],
-        )
-        pipeline.unet.add_adapter(unet_lora_config)
 
-        cast_training_params(pipeline.unet, torch.float32)
-    else:
-        print("Please use lora.")
-        exit()
+    # for all tasks but aesthetic, we use r=16, alpha =32. For aesthetic, we use r=8, alpha=8
+    unet_lora_config = LoraConfig(
+        r=training_config.lora_r,
+        lora_alpha=training_config.lora_alpha,
+        init_lora_weights="gaussian",
+        target_modules=["to_k", "to_q", "to_v", "to_out.0"],
+    )
+    pipeline.unet.add_adapter(unet_lora_config)
+
+    cast_training_params(pipeline.unet, torch.float32)
+    
     # load reward function
-    reward_fn = getattr(rewards, training_config.reward_fn)(cfg)
+    reward_fn = getattr(rewards, training_config.reward_fn)(training_config)
     dataset = getattr(dataloader, training_config.dataset)(training_config.sample_batch_size_per_gpu)
 
     # define save model hook:

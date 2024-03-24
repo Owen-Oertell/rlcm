@@ -1,0 +1,25 @@
+# @package _global_
+task: prompt_image_alignment
+
+
+prompt_image_alignment:
+  model: SimianLuo/LCM_Dreamshaper_v7
+  lr: 4e-4
+  sample_batch_size_per_gpu: 8
+  train_batch_size_per_gpu: 2
+  num_sample_iters: 12
+  clip_range: 0.0001
+  max_grad_norm: 5
+  adv_clip_max: 10
+  gradient_accumulation_steps: 48
+  num_epochs: 100
+  num_inference_steps: 8
+  batches_per_epoch: 1
+  stat_buffer_size: 32
+  stat_min_count: 10
+  num_inner_epochs: 1
+  lora_alpha: 32
+  lora_r: 16
+  dataset: AnimalsWithActions
+  reward_fn: prompt_image_alignment
+  port: 8060
