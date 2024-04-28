@@ -2,6 +2,8 @@
 
 This is the official implementation of the paper [RL for Consistency Models: Faster Reward Guided Text-to-Image Generation](https://rlcm.owenoertell.com). We support [low rank adaptation (LoRA)](https://arxiv.org/pdf/2106.09685.pdf) for finetuning a [latent consistency model (LCM)](https://arxiv.org/pdf/2310.04378.pdf). Much of this code was inspired by the repository for [Denoising Diffusion Policy Optimization (DDPO)](https://arxiv.org/pdf/2305.13301.pdf).
 
+**UPDATE** Now with REBEL suppot! Check out the rebel [paper](https://arxiv.org/pdf/2404.16767) for more information, or just turn it on at `training.algorithm` of `config.yaml`. You may have to increase the learning rate (and decrease train batch size depending on your gpu), but otherwise all hyperparameters should be the same.
+
 ![image](figures/front_page.png)
 
 ## Installation

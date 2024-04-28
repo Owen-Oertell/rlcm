@@ -20,6 +20,7 @@ prompt_image_alignment:
   num_inner_epochs: 1
   lora_alpha: 32
   lora_r: 16
+  rebel_lr: 1
   dataset: AnimalsWithActions
   reward_fn: prompt_image_alignment
   port: 8060

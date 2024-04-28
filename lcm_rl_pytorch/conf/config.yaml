@@ -14,6 +14,7 @@ training:
   save_interval: 10
   max_prompt_length: 50
   logdir: "logs"
+  algorithm: "ppo" # either "ppo" or "rebel"
 
 defaults:
   - _self_

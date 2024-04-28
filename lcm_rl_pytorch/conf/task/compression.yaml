@@ -19,5 +19,6 @@ compression:
   num_inner_epochs: 1
   lora_alpha: 32
   lora_r: 16
+  rebel_lr: 1
   dataset: ComplexAnimals
   reward_fn: compressibility

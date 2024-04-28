@@ -14,7 +14,7 @@ logger = get_logger(__name__)
 tqdm = partial(tqdm.tqdm, dynamic_ncols=True)
 
 
-def training_loop(accelerator, cfg, training_config, pipeline, reward_fn, dataset):
+def ppo_training_loop(accelerator, cfg, training_config, pipeline, reward_fn, dataset):
     logging_step = 0
     stat_tracker = PerPromptStatTracker(
         training_config.stat_buffer_size, training_config.stat_min_count

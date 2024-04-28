@@ -20,5 +20,6 @@ aesthetic:
   num_inner_epochs: 1
   lora_alpha: 8
   lora_r: 8
+  rebel_lr: 1
   dataset: SimpleAnimals
   reward_fn: aesthetic

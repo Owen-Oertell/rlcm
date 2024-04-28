@@ -13,7 +13,6 @@ import numpy as np
 from peft import LoraConfig
 
 from lcm_rl_pytorch.util.lora import cast_training_params
-from lcm_rl_pytorch.core.training_loop import training_loop
 from lcm_rl_pytorch.core import dataloader
 logger = get_logger(__name__)
 
@@ -87,8 +86,12 @@ def main(cfg: DictConfig) -> None:
     accelerator.register_save_state_pre_hook(save_model_hook)
 
     # start training loop
-    training_loop(accelerator, cfg, training_config, pipeline, reward_fn, dataset)
-
+    if cfg.training.algorithm == "ppo":
+        from lcm_rl_pytorch.core.ppo_training_loop import ppo_training_loop
+        ppo_training_loop(accelerator, cfg, training_config, pipeline, reward_fn, dataset)
+    else: 
+        from lcm_rl_pytorch.core.rebel_training_loop import rebel_training_loop
+        rebel_training_loop(accelerator, cfg, training_config, pipeline, reward_fn, dataset)
 
 if __name__ == "__main__":
     main()
