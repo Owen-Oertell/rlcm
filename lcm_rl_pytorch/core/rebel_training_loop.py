@@ -327,7 +327,7 @@ def rebel_training_loop(accelerator, cfg, training_config, pipeline, reward_fn, 
                         log_difference = pi_theta_y - pi_theta_t_y - (pi_theta_y_prime - pi_theta_t_y_prime)
                         advantage_difference = sample1["advantages"] - sample2["advantages"]
 
-                        loss = training_config.rebel_rl * log_difference - advantage_difference
+                        loss = training_config.rebel_lr * log_difference - advantage_difference
                         loss = torch.square(loss).mean()
                         info["loss"].append(loss)
 
