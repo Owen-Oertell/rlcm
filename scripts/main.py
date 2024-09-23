@@ -14,10 +14,12 @@ from peft import LoraConfig
 
 from lcm_rl_pytorch.util.lora import cast_training_params
 from lcm_rl_pytorch.core import dataloader
+
 logger = get_logger(__name__)
 
 import os
 from accelerate.utils import ProjectConfiguration
+
 
 @hydra.main(
     version_base=None, config_path="../lcm_rl_pytorch/conf", config_name="config"
@@ -38,8 +40,12 @@ def main(cfg: DictConfig) -> None:
     accelerator = Accelerator(
         log_with="wandb",
         project_config=accelerator_config,
-        gradient_accumulation_steps=training_config.gradient_accumulation_steps
-        * training_config.num_inference_steps,
+        gradient_accumulation_steps=(
+            training_config.gradient_accumulation_steps
+            * training_config.num_inference_steps
+            if cfg.training.algorithm == "ppo"
+            else training_config.gradient_accumulation_steps
+        ),
         mixed_precision="fp16",
     )
 
@@ -72,10 +78,12 @@ def main(cfg: DictConfig) -> None:
     pipeline.unet.add_adapter(unet_lora_config)
 
     cast_training_params(pipeline.unet, torch.float32)
-    
+
     # load reward function
     reward_fn = getattr(rewards, training_config.reward_fn)(training_config)
-    dataset = getattr(dataloader, training_config.dataset)(training_config.sample_batch_size_per_gpu)
+    dataset = getattr(dataloader, training_config.dataset)(
+        training_config.sample_batch_size_per_gpu
+    )
 
     # define save model hook:
     def save_model_hook(models, weights, output_dir):
@@ -88,10 +96,17 @@ def main(cfg: DictConfig) -> None:
     # start training loop
     if cfg.training.algorithm == "ppo":
         from lcm_rl_pytorch.core.ppo_training_loop import ppo_training_loop
-        ppo_training_loop(accelerator, cfg, training_config, pipeline, reward_fn, dataset)
-    else: 
+
+        ppo_training_loop(
+            accelerator, cfg, training_config, pipeline, reward_fn, dataset
+        )
+    else:
         from lcm_rl_pytorch.core.rebel_training_loop import rebel_training_loop
-        rebel_training_loop(accelerator, cfg, training_config, pipeline, reward_fn, dataset)
+
+        rebel_training_loop(
+            accelerator, cfg, training_config, pipeline, reward_fn, dataset
+        )
+
 
 if __name__ == "__main__":
     main()
